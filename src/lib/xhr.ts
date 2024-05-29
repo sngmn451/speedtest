@@ -33,74 +33,81 @@ export function xhr<T = unknown>(url: string | URL, {
     let xhr = new XMLHttpRequest()
     let response = false
     let ping: number
-    try {
-      xhr.open(method || "GET", url)
-      xhr.onload = function () {
-        response = true
-        if (this.status >= 200 && this.status < 300) {
-          // Prepare headers
-          const headers = xhr.getAllResponseHeaders().trim().split(/[\r\n]+/)
-          const headerMap: Record<string,string> = {}
-          headers.forEach((line) => {
-            const parts = line.split(": ")
-            headerMap[parts.shift() as string] = parts.join(": ");     
-          })
+    let start: number
+    xhr.open(method || "GET", url)
+    xhr.onload = function () {
+      response = true
+      if (this.status >= 200 && this.status < 300) {
+        // Prepare headers
+        const headers = xhr.getAllResponseHeaders().trim().split(/[\r\n]+/)
+        const headerMap: Record<string,string> = {}
+        headers.forEach((line) => {
+          const parts = line.split(": ")
+          headerMap[parts.shift() as string] = parts.join(": ");     
+        })
 
-          if (onLoad) {
-            onLoad({
-              success: true,
-              data: xhr.responseText === "application/json" ? JSON.parse(xhr.response) as T : xhr.response,
-              ping,
-              headers: headerMap
-            })
-          } else {
-            resolve({
-              success: true,
-              data: xhr.responseText === "application/json" ? JSON.parse(xhr.response) as T : xhr.response,
-              ping,
-              headers: headerMap
-            })
-          }
+        if (onLoad) {
+          onLoad({
+            success: true,
+            data: xhr.responseText === "application/json" ? JSON.parse(xhr.response) as T : xhr.response,
+            ping,
+            headers: headerMap
+          })
         } else {
-          error = {
+          resolve({
+            success: true,
+            data: xhr.responseText === "application/json" ? JSON.parse(xhr.response) as T : xhr.response,
+            ping,
+            headers: headerMap
+          })
+        }
+      } else {
+        error = {
+          success: false,
+          status: this.status,
+          statusText: xhr.statusText
+        }
+        if (onError) {
+          onError(error)
+        } else {
+          reject(error)
+        }
+        xhr.onerror = function () {
+          reject({
             success: false,
             status: this.status,
             statusText: xhr.statusText
-          }
-          if (onError) {
-            onError(error)
-          } else {
-            reject(error)
-          }
-          xhr.onerror = function () {
+          })
+        }
+      }
+    }
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 2 && xhr.status == 200) {
+        ping = performance.now() - start
+      }
+    }
+    xhr.onprogress = function () {
+      if (ttl) {
+        setTimeout(() => {
+          if (!response) {
+            xhr.abort()
             reject({
               success: false,
-              status: this.status,
-              statusText: xhr.statusText
-            })
+              status: 408,
+              statusText: "Request Timeout"
+            })      
           }
-        }
+        }, ttl)
       }
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 2 && xhr.status == 200) {
-          ping = performance.now() - start
-        }
-      }
-      const start = performance.now()
-      xhr.onprogress = function () {
-        if (ttl) {
-          setTimeout(() => {
-            if (!response) {
-              xhr.abort()
-              reject({
-                success: false,
-                status: 408,
-                statusText: "Request Timeout"
-              })      
-            }
-          }, ttl)
-        }
-      }
+    }
+    xhr.onerror = function () {
+      reject({
+        status: xhr.status,
+        statusText: xhr.statusText
+      })
+    }
+    try {
+      start = performance.now()
       xhr.send()
     } catch (error) {
       error = {
