@@ -8,7 +8,7 @@ export function SpeedText ({ speed, isFinished = false }: {
     let random = Math.floor(Math.random()*1)
     return (
       <>
-        <div className="text-center font-display text-6xl leading-none">
+        <div className="text-center font-display text-7xl sm:text-9xl leading-none">
           {(speed+(isFinished?random:0)).toFixed(2)}
         </div>
         <div className="text-center text-md text-white/80">Kbps</div>
@@ -18,7 +18,7 @@ export function SpeedText ({ speed, isFinished = false }: {
     let random = Math.floor(Math.random()*100)
     return (
       <>
-        <div className="text-center font-display text-6xl leading-none">
+        <div className="text-center font-display text-7xl sm:text-9xl leading-none">
           {((speed+(isFinished?random:0))/1000).toFixed(2)}
         </div>
         <div className="text-center text-md text-white/80">Mbps</div>
@@ -29,7 +29,7 @@ export function SpeedText ({ speed, isFinished = false }: {
     
     return (
       <>
-        <div className="text-center font-display text-6xl leading-none">
+        <div className="text-center font-display text-7xl sm:text-9xl leading-none">
           {new Intl.NumberFormat("en-US", {
             maximumFractionDigits: 2
           }).format((speed+(isFinished?0:random))/1000/1000)}

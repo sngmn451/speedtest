@@ -74,14 +74,13 @@ export function SpeedTestContainer () {
         ⚡ Speed test ⚡
         </div>}
         {speedTestState !== "INIT" && <div className="relative">
-          <SpeedIndicator/>
-          <div className="absolute w-full h-full inset-0 flex flex-col items-center justify-center pt-24 gap-2">
-            <div>
+          <div className="flex flex-col items-center justify-center gap-2">
+            <div className="tabular-nums">
               {downloadSpeed.length > 0 && (speedTestState === "TESTING" ? <SpeedText speed={downloadSpeed[downloadSpeed.length-1]} isFinished={false}/> : <SpeedText speed={downloadSpeed.sort((a, b) => b - a).at(0)!} isFinished={true} />)}
             </div>
-            <div className="text-center">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
               <div className="text-xs text-white/67">{location}</div>
-              <div className="text-[8px] text-white/50">{ip}</div>
+              <div className="text-[8px] sm:text-xs text-white/50">{ip}</div>
             </div>
           </div>
         </div>}
