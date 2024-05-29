@@ -1,0 +1,33 @@
+---
+import "@/global.css"
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<title>Speed Test</title>
+	</head>
+	<body>
+		<main class="min-h-[calc(100dvh-var(--footer-height))] flex flex-col">
+			<slot/>
+		</main>
+		<footer id="footer" class="bg-black/10 border-t text-white/50 text-sm p-2 text-center">
+			Build with 🫶 by <a href="https://sittipong.com" class="text-primary"><u>Sittipong</u></a>
+		</footer>
+		<script>
+			function updateFooterHeight () {
+				const footerHeight = document.querySelector("#footer")!.clientHeight
+				document.querySelector("main")!.style.setProperty("--footer-height", `${footerHeight}px`)
+			}
+			updateFooterHeight()
+			window.addEventListener("resize", updateFooterHeight)
+			window.addEventListener("beforeunload", () => {
+				window.removeEventListener("resize", updateFooterHeight)
+			})
+		</script>
+	</body>
+</html>

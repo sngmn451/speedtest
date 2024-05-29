@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Bricolage+Grotesque:wght@400;700&display=swap");
+@import url("/assets/fonts/inter.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 50% 5%;
+    --foreground: 222 5% 90%;
+    --card: 222 50% 0%;
+    --card-foreground: 222 5% 90%;
+    --popover: 222 50% 5%;
+    --popover-foreground: 222 5% 90%;
+    --primary: 222 100% 63.9%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 222 30% 10%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 184 30% 15%;
+    --muted-foreground: 222 5% 60%;
+    --accent: 184 30% 15%;
+    --accent-foreground: 222 5% 90%;
+    --destructive: 0 100% 30%;
+    --destructive-foreground: 222 5% 90%;
+    --border: 222 30% 18%;
+    --input: 222 30% 18%;
+    --ring: 222 100% 63.9%;
+    --radius: 0.5rem;
+    --font-body: Inter, Noto Color Emoji, sans-serif;
+    --font-display: "Bricolage Grotesque", var(--font-body);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border scroll-smooth antialiased;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
