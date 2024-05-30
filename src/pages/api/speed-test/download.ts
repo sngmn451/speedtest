@@ -17,7 +17,7 @@ export const GET:APIRoute = async ({ request, params }) => {
 async function indexFileSize (round: number, startingSize: number): Promise<number> {
   let size = startingSize
   let index = 0
-  const multiplyValue = 1.024
+  const multiplyValue = 1.08 //1.024
 
   while (index < round) {
     index++
