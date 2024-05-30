@@ -7,7 +7,6 @@ import { useState } from "react"
 export function SpeedTestContainer () {
   const [pingms, setPingms] = useState<number>(0)
   const [location, setLocation] = useState<string>("")
-  const [ip, setIp] = useState<string>("")
   const [downloadSpeed, setDownloadSpeed] = useState<number[]>([])
   const [downloadLossCount, setDownloadLossCount] = useState<number>(0)
   const [downloadErrorCount, setDownloadErrorCount] = useState<number>(0)
@@ -16,7 +15,6 @@ export function SpeedTestContainer () {
   async function onClick () {
     const url = {
       info: `https://ip-info.apthlabs.workers.dev`,
-      ipv4: `https://api.ipify.org/?format=json`
     }
     const MAX_ROUNDS = 512
     const MAX_TIME_PER_REQUEST_IN_MS = 200
@@ -29,10 +27,6 @@ export function SpeedTestContainer () {
       city: string
     }
     setLocation(`${city}, ${country}`)
-    const { ip } = await (await fetch(url.ipv4)).json() as {
-      ip: string
-    }
-    setIp(ip)
     while (round < MAX_ROUNDS) {
       const downloadSpeed = await DownloadSpeedTest(round, MAX_TIME_PER_REQUEST_IN_MS)
       if (downloadSpeed.timeout) {
@@ -80,7 +74,6 @@ export function SpeedTestContainer () {
             </div>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
               <div className="text-xs text-white/67">{location}</div>
-              <div className="text-[8px] sm:text-xs text-white/50">{ip}</div>
             </div>
           </div>
         </div>}
