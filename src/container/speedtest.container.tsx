@@ -13,6 +13,7 @@ export function SpeedTestContainer () {
   const [speedTestState, setSpeedTestState] = useState<"INIT" | "TESTING" | "FINISH">("INIT")
   // const [uploadSpeed, setUploadSpeed] = useState<number[]>([])
   async function onClick () {
+    window.gtag("event", "test_speed")
     const url = {
       info: `https://ip-info.apthlabs.workers.dev`,
     }
