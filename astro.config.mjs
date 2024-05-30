@@ -12,12 +12,6 @@ export default defineConfig({
       tailwind({
       applyBaseStyles: false
     }),
-      million.vite({
-      mode: "react",
-      server: true,
-      auto: true
-    }),
-    MillionLint.vite()
   ],
   output: "server",
   adapter: cloudflare(),
