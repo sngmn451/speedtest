@@ -8,10 +8,10 @@ export const GET:APIRoute = async ({ request, params }) => {
   const index = Number(new URL(request.url).searchParams.get("index"))
   const lastFetchTime = Number(new URL(request.url).searchParams.get("lft")) || 0
   const size = await indexFileSize(index, DEFAULT_FILE_SIZE, lastFetchTime)
-  const file = generateFile(size,)
+  const file = generateFile(size)
   const response = new Response(file, { status: 200 })
   response.headers.set("Content-Type", "text/plain")
-  response.headers.set("X-Content-Length", String(size))
+  response.headers.set("X-Content-Length", String(file.size))
   response.headers.set("X-Api-Time", String(performance.now() - now))
   return response
 }
