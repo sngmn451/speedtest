@@ -134,7 +134,6 @@ async function DownloadSpeedTest (round: number, ttl: number, lastFetchTime: num
     const ApiTime = Number(response.headers!["x-api-time"])
     const downloadTimeInMs = (fetchDuration - ApiTime)
   
-    console.log({contentLength, downloadTimeInMs})
     speed = fileSizeInBits / downloadTimeInMs // in Mb/s
     return {
       success: true,
