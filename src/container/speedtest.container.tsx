@@ -18,7 +18,7 @@ export function SpeedTestContainer () {
     }
     const MAX_ROUNDS = 512
     const MAX_TIME_PER_REQUEST_IN_MS = 200
-    const MAX_TIME_FETCH_IN_MS = 200
+    const MAX_TIME_FETCH_IN_MS = 1000
     let round = 0
     let lastFetchTime: number = 0
     setSpeedTestState("TESTING")
