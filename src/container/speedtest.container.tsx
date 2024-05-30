@@ -28,7 +28,7 @@ export function SpeedTestContainer () {
     }
     setLocation(`${city}, ${country}`)
     while (round < MAX_ROUNDS) {
-      const downloadSpeed = await DownloadSpeedTest(round, MAX_TIME_PER_REQUEST_IN_MS)
+      const downloadSpeed = await DownloadSpeedTest(round, MAX_TIME_PER_REQUEST_IN_MS, lastFetchTime)
       if (downloadSpeed.timeout) {
         setDownloadErrorCount(downloadErrorCount + 1)
       }
@@ -103,7 +103,7 @@ const url = {
  * @param size in Bytes
  * @param ttl in ms
  */
-async function DownloadSpeedTest (round: number, ttl: number): Promise<{
+async function DownloadSpeedTest (round: number, ttl: number, lastFetchTime: number): Promise<{
   success: boolean
   speed?: number
   ping?: number
@@ -118,7 +118,7 @@ async function DownloadSpeedTest (round: number, ttl: number): Promise<{
   const now = performance.now()
   let response
   try {
-    response = await xhr(`${url.download}?index=${round}&t=${new Date().getTime()}`, { ttl })
+    response = await xhr(`${url.download}?index=${round}&t=${new Date().getTime()}&lft=${lastFetchTime}`, { ttl })
 
     if (response.success === false) {
       return {
@@ -133,6 +133,7 @@ async function DownloadSpeedTest (round: number, ttl: number): Promise<{
     const ApiTime = Number(response.headers!["x-api-time"])
     const downloadTimeInMs = (fetchDuration - ApiTime)
   
+    console.log({fileSizeInBits, downloadTimeInMs})
     speed = fileSizeInBits / downloadTimeInMs // in Mb/s
     return {
       success: true,
