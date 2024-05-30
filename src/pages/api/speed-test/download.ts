@@ -9,7 +9,7 @@ export const GET:APIRoute = async ({ request, params }) => {
   const file = generateFile(size)
   const response = new Response(file, { status: 200 })
   response.headers.set("Content-Type", "text/plain")
-  response.headers.set("Content-Length", String(size))
+  response.headers.set("X-Content-Length", String(size))
   response.headers.set("X-Api-Time", String(performance.now() - now))
   return response
 }

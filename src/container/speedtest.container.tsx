@@ -128,7 +128,7 @@ async function DownloadSpeedTest (round: number, ttl: number): Promise<{
       }
     }
     const fetchDuration = Math.floor(performance.now() - now) // in ms
-    const fileSizeInBytes = Number(response.headers!["content-length"])
+    const fileSizeInBytes = Number(response.headers!["x-content-length"])
     const fileSizeInBits = fileSizeInBytes*8
     const ApiTime = Number(response.headers!["x-api-time"])
     const downloadTimeInMs = (fetchDuration - ApiTime)
